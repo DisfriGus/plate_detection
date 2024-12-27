@@ -1,101 +1,102 @@
-import Image from "next/image";
-
+"use client";
+import { useState } from "react";
+import { TbUpload } from "react-icons/tb";
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [uploadedImage, setUploadedImage] = useState(null); // State untuk gambar yang diunggah
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const handleImageUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const file = event.target.files?.[0]; // Tambahkan null checking
+    if (file) {
+      const imageUrl = URL.createObjectURL(file); // Buat URL sementara untuk gambar
+      setUploadedImage(imageUrl); // Simpan URL ke state
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="bg-blue-500 p-4 flex justify-center items-center">
+        <h1 className="text-white font-bold text-lg text-center">
+          License Plate Detection
+        </h1>
+        {/* <nav>
+          <a href="#contact" className="text-white mr-4">
+            Contact
+          </a>
+          <button className="bg-white text-blue-500 px-4 py-2 rounded">
+            Sign Up
+          </button>
+        </nav> */}
+      </header>
+
+      {/* Content */}
+      <main className="p-8">
+        <div className="max-w-4xl mx-auto bg-white shadow rounded-md p-6">
+          {/* Image Section */}
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="flex-grow">
+              <div className="relative w-full h-64 border rounded-md overflow-hidden">
+                {uploadedImage ? (
+                  <img
+                    src={uploadedImage} // Tampilkan gambar yang diunggah
+                    alt="Uploaded License Plate"
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full text-gray-500">
+                    No Image Uploaded
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Info Section */}
+            <div className="flex-shrink-0">
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-600">License Plate</p>
+                  <p className="font-bold text-lg">
+                    {uploadedImage ? "B591RI" : "-"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Region</p>
+                  <p className="font-bold text-lg">
+                    {uploadedImage ? "ID" : "-"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Upload Section */}
+          <div className="mt-8 text-center">
+            <label
+              htmlFor="file-upload"
+              className="bg-gray-200 text-gray-700 px-4 py-2 rounded flex items-center justify-between mx-auto cursor-pointer"
+            >
+              <span className="material-icons mr-2">Upload Image</span>
+              <span>
+                <TbUpload />
+              </span>
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <select className="mt-4 border p-2 rounded w-32 mx-auto">
+              <option>Global</option>
+            </select>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      {/* Footer */}
     </div>
   );
 }
